@@ -1,0 +1,5021 @@
+{
+	"info": {
+		"_postman_id": "81cb779d-c8cb-4b46-8872-6a862c86429f",
+		"name": "IDATA2306 - Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27885597",
+		"_collection_link": "https://adntnu.postman.co/workspace/ADNTNU-Workspace~f15043fe-9b25-4c59-883a-8783c209d029/collection/27885597-81cb779d-c8cb-4b46-8872-6a862c86429f?action=share&source=collection_link&creator=27885597"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Daniel\",\n  \"lastName\": \"Neset\",\n  \"email\": \"SuperUser@ntnu.no\",\n  \"password\": \"SuperDuper123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}auth/signup",
+							"host": [
+								"{{BASE_URL}}auth"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"JWT_TOKEN\", jsonData.jwt);",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"email\": \"danielneset@gmail.com\",\n     \"password\": \"Daniel1234!\"\n }\n\n//{\n//    \"email\": \"a_lund_01@hotmail.com\",\n//    \"password\": \"BMY6ckz!mye-jtk3rnr\"\n//}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}auth/login",
+							"host": [
+								"{{BASE_URL}}auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Location",
+			"item": [
+				{
+					"name": "GetSingleLocation - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}location/100000",
+							"host": [
+								"{{BASE_URL}}location"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingelLocation - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"LOCATION_ID\", jsonData.id);",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"country\": \"String\",\n  \"name\": \"String\",\n  \"image\": \"wewe\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}location",
+							"host": [
+								"{{BASE_URL}}location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleLocation - BadRequest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Invlaid\": \"String\",\n  \"Invalid\": \"String\",\n  \"image\": \"wewe\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}location",
+							"host": [
+								"{{BASE_URL}}location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllLocations - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}location",
+							"host": [
+								"{{BASE_URL}}location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleLocation - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.country).to.eql(\"String\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}location/{{LOCATION_ID}}",
+							"host": [
+								"{{BASE_URL}}location"
+							],
+							"path": [
+								"{{LOCATION_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleLocation - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"country\": \"newString\",\n  \"name\": \"newString\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}location/100000",
+							"host": [
+								"{{BASE_URL}}location"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleLocation - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Invalid\": \"Invlaid\",\n  \"name\": \"Invalid\",\n  \"image\": \"image\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}location/{{LOCATION_ID}}",
+							"host": [
+								"{{BASE_URL}}location"
+							],
+							"path": [
+								"{{LOCATION_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleLocation - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Test if new string is correct\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.country).to.eql(\"newString\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"country\": \"newString\",\n  \"name\": \"newString\",\n  \"image\": \"New Yoke\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}location/{{LOCATION_ID}}",
+							"host": [
+								"{{BASE_URL}}location"
+							],
+							"path": [
+								"{{LOCATION_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleLocation - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}location/10000000",
+							"host": [
+								"{{BASE_URL}}location"
+							],
+							"path": [
+								"10000000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleLocation - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}location/{{LOCATION_ID}}",
+							"host": [
+								"{{BASE_URL}}location"
+							],
+							"path": [
+								"{{LOCATION_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Airport",
+			"item": [
+				{
+					"name": "AddSingelLocation - Child",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"LOCATION_ID\", jsonData.id);",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"country\": \"String\",\n  \"name\": \"String\",\n  \"image\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}location",
+							"host": [
+								"{{BASE_URL}}location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleAirport - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}airport/100000",
+							"host": [
+								"{{BASE_URL}}airport"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleAirport - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Invalid\": \"string\",\n  \"InvalidObj\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}airport",
+							"host": [
+								"{{BASE_URL}}airport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleAirport - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AIRPORT_ID\", jsonData.id);",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"string\",\n  \"name\": \"string\",\n  \"location\": {\n    \"id\": {{LOCATION_ID}}\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}airport",
+							"host": [
+								"{{BASE_URL}}airport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllAirports - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}airport",
+							"host": [
+								"{{BASE_URL}}airport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleAirports - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}airport/{{AIRPORT_ID}}",
+							"host": [
+								"{{BASE_URL}}airport"
+							],
+							"path": [
+								"{{AIRPORT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleAirport - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"string2\",\n  \"name\": \"string3\",\n  \"location\": {\n    \"id\": {{LOCATION_ID}}\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}airport/100000",
+							"host": [
+								"{{BASE_URL}}airport"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleAirport - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"string2\",\n  \"invalid\": \"string3\",\n  \"location\": {\n    \"id\": {{LOCATION_ID}}\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}airport/{{AIRPORT_ID}}",
+							"host": [
+								"{{BASE_URL}}airport"
+							],
+							"path": [
+								"{{AIRPORT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleAirport - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"string2\",\n  \"name\": \"string3\",\n  \"location\": {\n    \"id\": {{LOCATION_ID}}\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}airport/{{AIRPORT_ID}}",
+							"host": [
+								"{{BASE_URL}}airport"
+							],
+							"path": [
+								"{{AIRPORT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleAirport - Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}airport/100000",
+							"host": [
+								"{{BASE_URL}}airport"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleAirport - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}airport/{{AIRPORT_ID}}",
+							"host": [
+								"{{BASE_URL}}airport"
+							],
+							"path": [
+								"{{AIRPORT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleLocation - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}location/{{LOCATION_ID}}",
+							"host": [
+								"{{BASE_URL}}location"
+							],
+							"path": [
+								"{{LOCATION_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Airline",
+			"item": [
+				{
+					"name": "GetSingleAirline - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}airline/1000000",
+							"host": [
+								"{{BASE_URL}}airline"
+							],
+							"path": [
+								"1000000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingelAirline - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Invalid\": \"String\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}airline",
+							"host": [
+								"{{BASE_URL}}airline"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingelAirline - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AIRLINE_ID\", jsonData.id);",
+									"",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"String\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}airline",
+							"host": [
+								"{{BASE_URL}}airline"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllAirlines - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}airline",
+							"host": [
+								"{{BASE_URL}}airline"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleAirline - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}airline/{{AIRLINE_ID}}",
+							"host": [
+								"{{BASE_URL}}airline"
+							],
+							"path": [
+								"{{AIRLINE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSignleAirline - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"newString\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}airline/100000",
+							"host": [
+								"{{BASE_URL}}airline"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSignleAirline - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Invalid\": \"newString\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}airline/{{AIRLINE_ID}}",
+							"host": [
+								"{{BASE_URL}}airline"
+							],
+							"path": [
+								"{{AIRLINE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSignleAirline - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Test if new string is correct\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(\"newString\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"newString\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}airline/{{AIRLINE_ID}}",
+							"host": [
+								"{{BASE_URL}}airline"
+							],
+							"path": [
+								"{{AIRLINE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleAirline - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}airline/1000000",
+							"host": [
+								"{{BASE_URL}}airline"
+							],
+							"path": [
+								"1000000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleAirline - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}airline/{{AIRLINE_ID}}",
+							"host": [
+								"{{BASE_URL}}airline"
+							],
+							"path": [
+								"{{AIRLINE_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Flight",
+			"item": [
+				{
+					"name": "AddLocation - Child",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"LOCATION_ID\", jsonData.id);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"country\": \"string\",\n  \"name\": \"string\",\n  \"image\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}location",
+							"host": [
+								"{{BASE_URL}}location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddAirport - Child",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AIRPORT_ID\", jsonData.id);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"string\",\n  \"name\": \"string\",\n  \"location\": {\n    \"id\": {{LOCATION_ID}}\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}airport",
+							"host": [
+								"{{BASE_URL}}airport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddAirline - Child",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AIRLINE_ID\", jsonData.id);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"String\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}airline",
+							"host": [
+								"{{BASE_URL}}airline"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllFlights - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}flight/1000000",
+							"host": [
+								"{{BASE_URL}}flight"
+							],
+							"path": [
+								"1000000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleFlight - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Invalid\": \"string\",\n  \"departureAirport\": {\n    \"id\": {{AIRPORT_ID}}\n  },\n  \"arrivalAirportInvlaid\": {\n    \"id\": {{AIRPORT_ID}}\n  },\n  \"airlineId\": {\n    \"id\":  {{AIRLINE_ID}}\n  },\n  \"departureDate\": \"2024-05-17T01:44:26.615Z\",\n  \"arrivalDate\": \"2024-05-17T01:44:26.615Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}flight",
+							"host": [
+								"{{BASE_URL}}flight"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleFlight - Ok",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"FLIGHT_ID\", jsonData.id);",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"string\",\n  \"departureAirport\": {\n    \"id\": {{AIRPORT_ID}}\n  },\n  \"arrivalAirport\": {\n    \"id\": {{AIRPORT_ID}}\n  },\n  \"airline\": {\n    \"id\":  {{AIRLINE_ID}}\n  },\n  \"departureDate\": \"2024-05-17T01:44:26.615Z\",\n  \"arrivalDate\": \"2024-05-17T01:44:26.615Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}flight",
+							"host": [
+								"{{BASE_URL}}flight"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllFlights - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}flight",
+							"host": [
+								"{{BASE_URL}}flight"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleFlights - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}flight/{{FLIGHT_ID}}",
+							"host": [
+								"{{BASE_URL}}flight"
+							],
+							"path": [
+								"{{FLIGHT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleFlights - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"string\",\n  \"departureAirport\": {\n    \"id\": {{AIRPORT_ID}}\n  },\n  \"arrivalAirport\": {\n    \"id\": {{AIRPORT_ID}}\n  },\n  \"airlineId\": {\n    \"id\":  {{AIRLINE_ID}}\n  },\n  \"departureDate\": \"2024-05-17T01:44:26.615Z\",\n  \"arrivalDate\": \"2024-05-17T01:44:26.615Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}flight/1000000",
+							"host": [
+								"{{BASE_URL}}flight"
+							],
+							"path": [
+								"1000000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleFlights - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nameInvalid\": \"string\",\n  \"departureAirport\": {\n    \"id\": {{AIRPORT_ID}}\n  },\n  \"arrivalAirport\": {\n    \"id\": {{AIRPORT_ID}}\n  },\n  \"airlineIdInvalid\": {\n    \"id\":  {{AIRLINE_ID}}\n  },\n  \"departureDate\": \"2024-05-17T01:44:26.615Z\",\n  \"arrivalDate\": \"2024-05-17T01:44:26.615Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}flight/{{FLIGHT_ID}}",
+							"host": [
+								"{{BASE_URL}}flight"
+							],
+							"path": [
+								"{{FLIGHT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleFlights - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"newstring\",\n  \"departureAirport\": {\n    \"id\": {{AIRPORT_ID}}\n  },\n  \"arrivalAirport\": {\n    \"id\": {{AIRPORT_ID}}\n  },\n  \"airline\": {\n    \"id\":  {{AIRLINE_ID}}\n  },\n  \"departureDate\": \"2024-05-17T01:44:26.615Z\",\n  \"arrivalDate\": \"2024-05-17T01:44:26.615Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}flight/{{FLIGHT_ID}}",
+							"host": [
+								"{{BASE_URL}}flight"
+							],
+							"path": [
+								"{{FLIGHT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleFlight - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}flight/1000000",
+							"host": [
+								"{{BASE_URL}}flight"
+							],
+							"path": [
+								"1000000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleFlight - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}flight/{{FLIGHT_ID}}",
+							"host": [
+								"{{BASE_URL}}flight"
+							],
+							"path": [
+								"{{FLIGHT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleLocation - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}location/{{LOCATION_ID}}",
+							"host": [
+								"{{BASE_URL}}location"
+							],
+							"path": [
+								"{{LOCATION_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Provider",
+			"item": [
+				{
+					"name": "GetAllProviders - not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}provider/1000000",
+							"host": [
+								"{{BASE_URL}}provider"
+							],
+							"path": [
+								"1000000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleProvider - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Invlaid\": \"String\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}provider",
+							"host": [
+								"{{BASE_URL}}provider"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleProvider - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"PROVIDER_ID\", jsonData.id);",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"String\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}provider",
+							"host": [
+								"{{BASE_URL}}provider"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleProvider - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}provider/{{PROVIDER_ID}}",
+							"host": [
+								"{{BASE_URL}}provider"
+							],
+							"path": [
+								"{{PROVIDER_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllProvider - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}provider",
+							"host": [
+								"{{BASE_URL}}provider"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleProvider - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"data\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}provider/1000000",
+							"host": [
+								"{{BASE_URL}}provider"
+							],
+							"path": [
+								"1000000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleProvider - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Invalid\": \"data\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}provider/{{PROVIDER_ID}}",
+							"host": [
+								"{{BASE_URL}}provider"
+							],
+							"path": [
+								"{{PROVIDER_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleProvider - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"data\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}provider/{{PROVIDER_ID}}",
+							"host": [
+								"{{BASE_URL}}provider"
+							],
+							"path": [
+								"{{PROVIDER_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleProvider - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}provider/1000000",
+							"host": [
+								"{{BASE_URL}}provider"
+							],
+							"path": [
+								"1000000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleProvider - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}provider/{{PROVIDER_ID}}",
+							"host": [
+								"{{BASE_URL}}provider"
+							],
+							"path": [
+								"{{PROVIDER_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "price",
+			"item": [
+				{
+					"name": "AddSingleProvider - Child",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"PROVIDER_ID\", jsonData.id);",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Google\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}provider",
+							"host": [
+								"{{BASE_URL}}provider"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSinglePrice - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"provider\": {\n    \"id\": 1\n  },\n  \"price\": 10000,\n  \"currency\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}price/10000000",
+							"host": [
+								"{{BASE_URL}}price"
+							],
+							"path": [
+								"10000000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSinglePrice - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"providerInvalid\": {\n    \"id\": {{PROVIDER_ID}}\n  },\n  \"priceINVALID\": 10000,\n  \"currency\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}price",
+							"host": [
+								"{{BASE_URL}}price"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSinglePrice - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"PRICE_ID\", jsonData.id);",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"provider\": {\n    \"id\": {{PROVIDER_ID}}\n  },\n  \"price\": 10000,\n  \"currency\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}price",
+							"host": [
+								"{{BASE_URL}}price"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSinglePrice - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}price/{{PRICE_ID}}",
+							"host": [
+								"{{BASE_URL}}price"
+							],
+							"path": [
+								"{{PRICE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleProvider - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}provider",
+							"host": [
+								"{{BASE_URL}}provider"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSinglePrice - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"string2\",\n  \"name\": \"string3\",\n  \"location\": {\n    \"id\": {{LOCATION_ID}}\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}price/100000",
+							"host": [
+								"{{BASE_URL}}price"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSinglePrice - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"providerINVALID\": {\n    \"id\": {{PROVIDER_ID}}\n  },\n  \"price\": 10000,\n  \"currency\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}price/{{PRICE_ID}}",
+							"host": [
+								"{{BASE_URL}}price"
+							],
+							"path": [
+								"{{PRICE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSinglePrice - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"provider\": {\n    \"id\": {{PROVIDER_ID}}\n  },\n  \"price\": 10000,\n  \"currency\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}price/{{PRICE_ID}}",
+							"host": [
+								"{{BASE_URL}}price"
+							],
+							"path": [
+								"{{PRICE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSinglePrice - Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}price/100000",
+							"host": [
+								"{{BASE_URL}}price"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSinglePrice - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}price/{{PRICE_ID}}",
+							"host": [
+								"{{BASE_URL}}price"
+							],
+							"path": [
+								"{{PRICE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleProvider - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}provider/{{PROVIDER_ID}}",
+							"host": [
+								"{{BASE_URL}}provider"
+							],
+							"path": [
+								"{{PROVIDER_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "classType",
+			"item": [
+				{
+					"name": "GetSingleClassType - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}classType/100000",
+							"host": [
+								"{{BASE_URL}}classType"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleClassType - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"descriptionInvalid\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}classType",
+							"host": [
+								"{{BASE_URL}}classType"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleClassType - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"CLASSTYPE_ID\", jsonData.id);",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}classType",
+							"host": [
+								"{{BASE_URL}}classType"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleClassType - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}classType/{{CLASSTYPE_ID}}",
+							"host": [
+								"{{BASE_URL}}classType"
+							],
+							"path": [
+								"{{CLASSTYPE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllClassType - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}classType",
+							"host": [
+								"{{BASE_URL}}classType"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleClassType - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}classType/100000",
+							"host": [
+								"{{BASE_URL}}classType"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleClassType - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"descriptionInvalid\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}classType/{{CLASSTYPE_ID}}",
+							"host": [
+								"{{BASE_URL}}classType"
+							],
+							"path": [
+								"{{CLASSTYPE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleClassType - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"newString\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}classType/{{CLASSTYPE_ID}}",
+							"host": [
+								"{{BASE_URL}}classType"
+							],
+							"path": [
+								"{{CLASSTYPE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleClassType - Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}classType/100000",
+							"host": [
+								"{{BASE_URL}}classType"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleClassType - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}classType/{{CLASSTYPE_ID}}",
+							"host": [
+								"{{BASE_URL}}classType"
+							],
+							"path": [
+								"{{CLASSTYPE_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "extraFeature",
+			"item": [
+				{
+					"name": "GetSingleExtraFeature - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}extraFeature/100000",
+							"host": [
+								"{{BASE_URL}}extraFeature"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddExtraFeature - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"descriptionInvalid\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}extraFeature",
+							"host": [
+								"{{BASE_URL}}extraFeature"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleExtraFeature - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"EXTRAFEATURE_ID\", jsonData.id);",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}extraFeature",
+							"host": [
+								"{{BASE_URL}}extraFeature"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleExtraFeature - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}extraFeature/{{EXTRAFEATURE_ID}}",
+							"host": [
+								"{{BASE_URL}}extraFeature"
+							],
+							"path": [
+								"{{EXTRAFEATURE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllExtraFeature - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}extraFeature",
+							"host": [
+								"{{BASE_URL}}extraFeature"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleExtraFeature - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}extraFeature/100000",
+							"host": [
+								"{{BASE_URL}}extraFeature"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleExtraFeature - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"descriptionInvalid\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}extraFeature/{{EXTRAFEATURE_ID}}",
+							"host": [
+								"{{BASE_URL}}extraFeature"
+							],
+							"path": [
+								"{{EXTRAFEATURE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleExtraFeature - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"newString\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}extraFeature/{{EXTRAFEATURE_ID}}",
+							"host": [
+								"{{BASE_URL}}extraFeature"
+							],
+							"path": [
+								"{{EXTRAFEATURE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleExtraFeature - Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}extraFeature/100000",
+							"host": [
+								"{{BASE_URL}}extraFeature"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleExtraFeature - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}extraFeature/{{EXTRAFEATURE_ID}}",
+							"host": [
+								"{{BASE_URL}}extraFeature"
+							],
+							"path": [
+								"{{EXTRAFEATURE_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "trip",
+			"item": [
+				{
+					"name": "GetSingleTrip - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}trip/1000000",
+							"host": [
+								"{{BASE_URL}}trip"
+							],
+							"path": [
+								"1000000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddLocation - Child",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"LOCATION_ID\", jsonData.id);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"country\": \"string\",\n  \"name\": \"string\",\n  \"image\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}location",
+							"host": [
+								"{{BASE_URL}}location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddAirport - Child",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AIRPORT_ID\", jsonData.id);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"string\",\n  \"name\": \"string\",\n  \"location\": {\n    \"id\": {{LOCATION_ID}}\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}airport",
+							"host": [
+								"{{BASE_URL}}airport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddAirline - Child",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AIRLINE_ID\", jsonData.id);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"String\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}airline",
+							"host": [
+								"{{BASE_URL}}airline"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleFlight - Ok",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"FLIGHT_ID\", jsonData.id);",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"string\",\n  \"departureAirport\": {\n    \"id\": {{AIRPORT_ID}}\n  },\n  \"arrivalAirport\": {\n    \"id\": {{AIRPORT_ID}}\n  },\n  \"airline\": {\n    \"id\":  {{AIRLINE_ID}}\n  },\n  \"departureDate\": \"2024-05-17T01:44:26.615Z\",\n  \"arrivalDate\": \"2024-05-17T01:44:26.615Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}flight",
+							"host": [
+								"{{BASE_URL}}flight"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleProvider - Child Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"PROVIDER_ID\", jsonData.id);",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Google\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}provider",
+							"host": [
+								"{{BASE_URL}}provider"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSinglePrice - OK Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"PRICE_ID\", jsonData.id);",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"provider\": {\n    \"id\": {{PROVIDER_ID}}\n  },\n  \"price\": 10000,\n  \"currency\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}price",
+							"host": [
+								"{{BASE_URL}}price"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleClassType - OK Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"CLASSTYPE_ID\", jsonData.id);",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}classType",
+							"host": [
+								"{{BASE_URL}}classType"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleExtraFeature - OK Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"EXTRAFEATURE_ID\", jsonData.id);",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}extraFeature",
+							"host": [
+								"{{BASE_URL}}extraFeature"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSingleTrip - Ok",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"TRIP_ID\", jsonData.id);",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"leaveInitialFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"leaveArrivalFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"returnArrivalFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"returnInitialFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"prices\": [\n    {\n      \"id\": {{PRICE_ID}}\n    }\n  ],\n  \"classTypes\": [\n    {\n      \"id\": {{CLASSTYPE_ID}}\n    }\n  ],\n  \"extraFeatures\": [\n    {\n      \"id\": {{EXTRAFEATURE_ID}}\n    }\n  ],\n  \"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}trip",
+							"host": [
+								"{{BASE_URL}}trip"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllTrip - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"}); "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}trip",
+							"host": [
+								"{{BASE_URL}}trip"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleTrip - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"}); "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}trip/2",
+							"host": [
+								"{{BASE_URL}}trip"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleTrip - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"leaveInitialFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"leaveArrivalFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"returnArrivalFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"returnInitialFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"prices\": [\n    {\n      \"id\": {{PRICE_ID}}\n    }\n  ],\n  \"classTypes\": [\n    {\n      \"id\": {{CLASSTYPE_ID}}\n    }\n  ],\n  \"extraFeatures\": [\n    {\n      \"id\": {{EXTRAFEATURE_ID}}\n    }\n  ],\n  \"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}trip/100000",
+							"host": [
+								"{{BASE_URL}}trip"
+							],
+							"path": [
+								"100000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleTrip - Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"leaveInitialFlighINVALIDt\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"leaveArrivalFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"returnArrivalFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"returnInitialFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"prices\": [\n    {\n      \"id\": {{PRICE_ID}}\n    }\n  ],\n  \"classTypes\": [\n    {\n      \"id\": {{CLASSTYPE_ID}}\n    }\n  ],\n  \"extraFeatures\": [\n    {\n      \"id\": {{EXTRAFEATURE_ID}}\n    }\n  ],\n  \"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}trip/{{TRIP_ID}}",
+							"host": [
+								"{{BASE_URL}}trip"
+							],
+							"path": [
+								"{{TRIP_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSingleTrip - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.active).to.eql(false);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"leaveInitialFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"leaveArrivalFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"returnArrivalFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"returnInitialFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"prices\": [\n    {\n      \"id\": {{PRICE_ID}}\n    }\n  ],\n  \"classTypes\": [\n    {\n      \"id\": {{CLASSTYPE_ID}}\n    }\n  ],\n  \"extraFeatures\": [\n    {\n      \"id\": {{EXTRAFEATURE_ID}}\n    }\n  ],\n  \"active\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}trip/{{TRIP_ID}}",
+							"host": [
+								"{{BASE_URL}}trip"
+							],
+							"path": [
+								"{{TRIP_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateStatusTrip - Ok",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"leaveInitialFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"leaveArrivalFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"returnArrivalFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"returnInitialFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"prices\": [\n    {\n      \"id\": {{PRICE_ID}}\n    }\n  ],\n  \"classTypes\": [\n    {\n      \"id\": {{CLASSTYPE_ID}}\n    }\n  ],\n  \"extraFeatures\": [\n    {\n      \"id\": {{EXTRAFEATURE_ID}}\n    }\n  ],\n  \"departureFlightIntervals\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\",\n      \"departureAirport\": {\n        \"id\": 0,\n        \"code\": \"string\",\n        \"name\": \"string\",\n        \"location\": {\n          \"id\": 0,\n          \"country\": \"string\",\n          \"name\": \"string\",\n          \"image\": \"string\"\n        }\n      },\n      \"arrivalAirport\": {\n        \"id\": 0,\n        \"code\": \"string\",\n        \"name\": \"string\",\n        \"location\": {\n          \"id\": 0,\n          \"country\": \"string\",\n          \"name\": \"string\",\n          \"image\": \"string\"\n        }\n      },\n      \"airlineId\": {\n        \"id\": 0,\n        \"name\": \"string\"\n      },\n      \"departureDate\": \"2024-05-21T10:46:47.597Z\",\n      \"arrivalDate\": \"2024-05-21T10:46:47.597Z\"\n    }\n  ],\n  \"returnFlightIntervals\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\",\n      \"departureAirport\": {\n        \"id\": 0,\n        \"code\": \"string\",\n        \"name\": \"string\",\n        \"location\": {\n          \"id\": 0,\n          \"country\": \"string\",\n          \"name\": \"string\",\n          \"image\": \"string\"\n        }\n      },\n      \"arrivalAirport\": {\n        \"id\": 0,\n        \"code\": \"string\",\n        \"name\": \"string\",\n        \"location\": {\n          \"id\": 0,\n          \"country\": \"string\",\n          \"name\": \"string\",\n          \"image\": \"string\"\n        }\n      },\n      \"airlineId\": {\n        \"id\": 0,\n        \"name\": \"string\"\n      },\n      \"departureDate\": \"2024-05-21T10:46:47.597Z\",\n      \"arrivalDate\": \"2024-05-21T10:46:47.597Z\"\n    }\n  ],\n  \"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}trip/{{TRIP_ID}}/active?active=true",
+							"host": [
+								"{{BASE_URL}}trip"
+							],
+							"path": [
+								"{{TRIP_ID}}",
+								"active"
+							],
+							"query": [
+								{
+									"key": "active",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleTrip - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"leaveInitialFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"leaveArrivalFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"returnArrivalFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"returnInitialFlight\": {\n    \"id\": {{FLIGHT_ID}}\n  },\n  \"prices\": [\n    {\n      \"id\": {{PRICE_ID}}\n    }\n  ],\n  \"classTypes\": [\n    {\n      \"id\": {{CLASSTYPE_ID}}\n    }\n  ],\n  \"extraFeatures\": [\n    {\n      \"id\": {{EXTRAFEATURE_ID}}\n    }\n  ],\n  \"departureFlightIntervals\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\",\n      \"departureAirport\": {\n        \"id\": 0,\n        \"code\": \"string\",\n        \"name\": \"string\",\n        \"location\": {\n          \"id\": 0,\n          \"country\": \"string\",\n          \"name\": \"string\",\n          \"image\": \"string\"\n        }\n      },\n      \"arrivalAirport\": {\n        \"id\": 0,\n        \"code\": \"string\",\n        \"name\": \"string\",\n        \"location\": {\n          \"id\": 0,\n          \"country\": \"string\",\n          \"name\": \"string\",\n          \"image\": \"string\"\n        }\n      },\n      \"airlineId\": {\n        \"id\": 0,\n        \"name\": \"string\"\n      },\n      \"departureDate\": \"2024-05-21T10:46:47.597Z\",\n      \"arrivalDate\": \"2024-05-21T10:46:47.597Z\"\n    }\n  ],\n  \"returnFlightIntervals\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\",\n      \"departureAirport\": {\n        \"id\": 0,\n        \"code\": \"string\",\n        \"name\": \"string\",\n        \"location\": {\n          \"id\": 0,\n          \"country\": \"string\",\n          \"name\": \"string\",\n          \"image\": \"string\"\n        }\n      },\n      \"arrivalAirport\": {\n        \"id\": 0,\n        \"code\": \"string\",\n        \"name\": \"string\",\n        \"location\": {\n          \"id\": 0,\n          \"country\": \"string\",\n          \"name\": \"string\",\n          \"image\": \"string\"\n        }\n      },\n      \"airlineId\": {\n        \"id\": 0,\n        \"name\": \"string\"\n      },\n      \"departureDate\": \"2024-05-21T10:46:47.597Z\",\n      \"arrivalDate\": \"2024-05-21T10:46:47.597Z\"\n    }\n  ],\n  \"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}trip/1000000",
+							"host": [
+								"{{BASE_URL}}trip"
+							],
+							"path": [
+								"1000000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleTrip - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}trip/{{TRIP_ID}}",
+							"host": [
+								"{{BASE_URL}}trip"
+							],
+							"path": [
+								"{{TRIP_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSingleLocation - Ok",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}location/{{LOCATION_ID}}",
+							"host": [
+								"{{BASE_URL}}location"
+							],
+							"path": [
+								"{{LOCATION_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "GetAllUsers - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"}); "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}users",
+							"host": [
+								"{{BASE_URL}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddRole - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"}); "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"id\": 1\n    },\n    \"role\": {\n        \"id\": 1\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}users/addRole",
+							"host": [
+								"{{BASE_URL}}users"
+							],
+							"path": [
+								"addRole"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveRole - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"}); "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"id\": 1\n    },\n    \"role\": {\n        \"id\": 1\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}users/removeRole",
+							"host": [
+								"{{BASE_URL}}users"
+							],
+							"path": [
+								"removeRole"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateActiveUser - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"}); "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}users/1/active?active=true",
+							"host": [
+								"{{BASE_URL}}users"
+							],
+							"path": [
+								"1",
+								"active"
+							],
+							"query": [
+								{
+									"key": "active",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUser - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"}); "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}users/2",
+							"host": [
+								"{{BASE_URL}}users"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "saved",
+			"item": [
+				{
+					"name": "AddRole - OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"}); "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"id\": 1\n    },\n    \"role\": {\n        \"id\": 1\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}users/addRole",
+							"host": [
+								"{{BASE_URL}}users"
+							],
+							"path": [
+								"addRole"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSave",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"danielneset@gmail.com\",\n  \"tripId\": 1,\n  \"savedDate\": \"2024-05-22T20:02:21.252Z\"\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}saved",
+							"host": [
+								"{{BASE_URL}}saved"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request Copy 2",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}saved/danielneset@gmail.com/1",
+							"host": [
+								"{{BASE_URL}}saved"
+							],
+							"path": [
+								"danielneset@gmail.com",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
